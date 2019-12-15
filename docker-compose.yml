@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  www:
+    container_name: php74
+    build:
+      context: ./php
+      dockerfile: Dockerfile
+    volumes:
+      - ./php:/var/www/html/
+    ports:
+      - 8080:80
