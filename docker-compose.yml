@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   www:
-    container_name: php74
+    container_name: php72
     build:
       context: ./php
       dockerfile: Dockerfile

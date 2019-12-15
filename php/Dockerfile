@@ -1,3 +1,3 @@
-FROM php:7.4-cli
-COPY .. /app
-WORKDIR /app
+FROM php:7.2-apache
+RUN ls
+COPY src/ /var/www/html/
