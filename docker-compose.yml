@@ -1,11 +1,50 @@
 version: '3.7'
 services:
   www:
-    container_name: php72
+    container_name: php73
     build:
-      context: ./php
+      context: ./builds/webserver
       dockerfile: Dockerfile
+    depends_on:
+      - db
     volumes:
-      - ./php72:/var/www/html/
+      - ./www:/var/www/html/
     ports:
-      - 8080:80
+      - 9090:80 
+  db:
+    container_name: mysql8
+    build:
+      context: ./builds/mysql
+      dockerfile: Dockerfile
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+        MYSQL_ROOT_PASSWORD: root
+        MYSQL_DATABASE: reuma_db
+        MYSQL_USER: poligran
+        MYSQL_PASSWORD: mascota123
+    ports:
+      - 6033:3306
+  phpmyadmin:
+        container_name: phpadmin
+        image: phpmyadmin/phpmyadmin
+        links: 
+            - db:db
+        ports:
+            - 8000:80
+        environment:
+            MYSQL_USER: poligran
+            MYSQL_PASSWORD: mascota123
+            MYSQL_ROOT_PASSWORD: root
+  jenkins:
+      container_name: jenkins
+      image: jenkinsci/blueocean
+      environment:
+          - DOCKER_HOST=tcp://host.docker.internal:2375
+      user: root
+      ports:
+          - "8443:8443"
+          - "50000:50000"
+      volumes:
+          - ./jenkins_data:/var/jenkins_home
+          - ./home:/home
