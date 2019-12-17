@@ -7,7 +7,6 @@ services:
 
 before_install:
 - docker ps -a
-- docker-compose up
+- docker-compose build
 - docker ps -a
-
 
